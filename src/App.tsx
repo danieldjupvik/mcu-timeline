@@ -82,7 +82,10 @@ function App() {
     <>
       <StarBackground />
       <Wrapper>
-        <HeaderContainer visible={bangersFontLoaded}>
+        <HeaderContainer
+          visible={bangersFontLoaded}
+          onClick={() => window.open('https://www.marvel.com/movies', '_blank')}
+        >
           <Header>{t('header')}</Header>
         </HeaderContainer>
         <Description>{t('description')}</Description>
@@ -153,6 +156,7 @@ const HeaderContainer = styled.div<{ visible: boolean }>`
   border-radius: 4px;
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   transition: opacity 1s ease-in-out;
+  cursor: pointer;
 `
 
 const TabWrapper = styled.div`
