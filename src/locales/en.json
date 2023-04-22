@@ -1,0 +1,12 @@
+{
+  "header": "MCU Timeline",
+  "description": "In theater and upcoming Marvel Movies and TV Shows",
+  "movies": "Movies",
+  "tvShows": "TV Shows",
+  "dataProvidedBy": "Data provided with API from",
+  "error_message": "An error occurred while loading Marvel info..",
+  "date": "Date",
+  "phase": "Phase",
+  "inTheater": "In Theater",
+  "unknown": "Unknown"
+}

@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "eamodio.gitlens",
+    "styled-components.vscode-styled-components",
+    "dsznajder.es7-react-js-snippets",
+    "oderwat.indent-rainbow",
+    "dbaeumer.vscode-eslint"
+  ],
+  "unwantedRecommendations": []
+}

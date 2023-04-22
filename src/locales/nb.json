@@ -1,0 +1,12 @@
+{
+  "header": "MCU Tidslinje",
+  "description": "Filmer og TV-serier fra Marvel som er nå på kino eller kommer snart",
+  "movies": "Filmer",
+  "tvShows": "TV-serier",
+  "dataProvidedBy": "Data levert av API fra",
+  "error_message": "En feil oppstod ved lasting av Marvel-informasjon.",
+  "date": "Dato",
+  "phase": "Fase",
+  "inTheater": "På Kino",
+  "unknown": "Ukjent"
+}
