@@ -40,6 +40,9 @@ const GlobalStyles = createGlobalStyle`
 
   body {
     font-family: 'Lato', sans-serif;
+    background: rgb(0, 0, 0);
+    color: white;
+    margin: 0px;
   }
 `
 

@@ -193,8 +193,11 @@ const Footer = styled.div`
 
 const Description = styled.div`
   margin-bottom: 30px;
-  padding: 0 20px;
+  line-height: 24px;
   font-size: 17px;
+  @media (max-width: 768px) {
+    max-width: 300px;
+  }
 `
 
 const VerticalLine = styled.div`
