@@ -1,6 +1,6 @@
 import { MCUApiResponse } from '../hooks/useMCUApi'
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 export const Card = ({
@@ -13,10 +13,17 @@ export const Card = ({
 }: MCUApiResponse & { type: string }) => {
   const { t } = useTranslation()
   const [isImageLoaded, setIsImageLoaded] = useState(false)
+  const [isInTheaterLogoVisible, setIsInTheaterLogoVisible] = useState(false)
 
   const handleImageLoad = () => {
     setIsImageLoaded(true)
   }
+
+  useEffect(() => {
+    if (isImageLoaded) {
+      setIsInTheaterLogoVisible(true)
+    }
+  }, [isImageLoaded])
 
   const isInTheater = (release_date: string): boolean => {
     const releaseDate = new Date(release_date)
@@ -47,8 +54,11 @@ export const Card = ({
         isImageLoaded={isImageLoaded}
       />
       {type === 'movies' && isInTheater(release_date) && (
-        <InTheaterLogo> {t('inTheater')}</InTheaterLogo>
+        <InTheaterLogo visible={isInTheaterLogoVisible}>
+          {t('inTheater')}
+        </InTheaterLogo>
       )}
+
       <Wrapper>
         <Title>{title}</Title>
         <Row>
@@ -82,7 +92,7 @@ const Image = styled.img<{ isImageLoaded: boolean }>`
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   opacity: ${({ isImageLoaded }) => (isImageLoaded ? '1' : '0')};
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 1s ease-in-out;
 `
 
 const Wrapper = styled.div`
@@ -113,7 +123,7 @@ const Left = styled.div`
   font-weight: 600;
 `
 
-const InTheaterLogo = styled.div`
+const InTheaterLogo = styled.div<{ visible: boolean }>`
   position: absolute;
   top: 2px;
   right: -26px;
@@ -127,4 +137,6 @@ const InTheaterLogo = styled.div`
   clip-path: polygon(0px 0px, 100% 0px, 90% 100%, 10% 100%);
   transform: rotate(10deg);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px;
+  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  transition: opacity 1s ease-in-out;
 `

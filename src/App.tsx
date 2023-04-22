@@ -5,10 +5,13 @@ import styled from 'styled-components'
 import { Card } from './components/Card'
 import { Loader } from './components/Loader'
 import { useTranslation } from 'react-i18next'
+import FontFaceObserver from 'fontfaceobserver'
+import { useEffect } from 'react'
 
 function App() {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('movies')
+  const [bangersFontLoaded, setBangersFontLoaded] = useState(false)
   const { data, isLoading, isError } = useMCUApi(activeTab, {
     params: {
       order: 'release_date,ASC'
@@ -17,6 +20,14 @@ function App() {
 
   const date = new Date()
   const year = date.getFullYear()
+
+  useEffect(() => {
+    const bangersObserver = new FontFaceObserver('Bangers')
+
+    bangersObserver.load().then(() => {
+      setBangersFontLoaded(true)
+    })
+  }, [])
 
   type TabContent = {
     content: ReactNode
@@ -71,7 +82,7 @@ function App() {
     <>
       <StarBackground />
       <Wrapper>
-        <HeaderContainer>
+        <HeaderContainer visible={bangersFontLoaded}>
           <Header>{t('header')}</Header>
         </HeaderContainer>
         <Description>{t('description')}</Description>
@@ -130,7 +141,7 @@ const Header = styled.div`
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   letter-spacing: 4px;
 `
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.div<{ visible: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,7 +151,10 @@ const HeaderContainer = styled.div`
   margin-top: 50px;
   margin-bottom: 40px;
   border-radius: 4px;
+  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  transition: opacity 1s ease-in-out;
 `
+
 const TabWrapper = styled.div`
   color: white;
   display: flex;

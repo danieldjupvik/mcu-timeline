@@ -9,7 +9,7 @@ import LanguageDetector, {
 } from 'i18next-browser-languagedetector'
 import enTranslations from './locales/en.json'
 import nbTranslations from './locales/nb.json'
-import GlobalStyles from './GlobalStyles'
+import GlobalStyle from './GlobalStyles'
 
 const queryClient = new QueryClient()
 
@@ -38,7 +38,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18n}>
-        <GlobalStyles />
+        <GlobalStyle />
         <App />
       </I18nextProvider>
     </QueryClientProvider>
