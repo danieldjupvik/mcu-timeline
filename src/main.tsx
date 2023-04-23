@@ -10,6 +10,7 @@ import LanguageDetector, {
 import enTranslations from './locales/en.json'
 import nbTranslations from './locales/nb.json'
 import GlobalStyle from './GlobalStyles'
+import { Analytics } from '@vercel/analytics/react'
 
 const queryClient = new QueryClient()
 
@@ -40,6 +41,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <I18nextProvider i18n={i18n}>
         <GlobalStyle />
         <App />
+        <Analytics />
       </I18nextProvider>
     </QueryClientProvider>
   </React.StrictMode>
