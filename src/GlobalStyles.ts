@@ -1,9 +1,9 @@
 import { createGlobalStyle } from 'styled-components'
 
 import Bangers from './assets/fonts/Bangers/Bangers-Regular.ttf'
+import LatoBold from './assets/fonts/Lato/Lato-Bold.ttf'
 import LatoLight from './assets/fonts/Lato/Lato-Light.ttf'
 import LatoRegular from './assets/fonts/Lato/Lato-Regular.ttf'
-import LatoBold from './assets/fonts/Lato/Lato-Bold.ttf'
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -38,16 +38,21 @@ const GlobalStyles = createGlobalStyle`
     font-display: swap;
   }
 
-  body {
+
+  body, html {
     font-family: 'Lato', sans-serif;
     background: rgb(0, 0, 0);
     color: white;
     margin: 0px;
+    overflow: hidden;
+    height: 100%;
   }
-  
-  html {
-  background: rgb(0, 0, 0);
-}
+
+  #root {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    height: 100%;
+  }
 `
 
 export default GlobalStyles

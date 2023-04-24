@@ -21,6 +21,9 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
   const { t } = useTranslation()
   const year = new Date().getFullYear()
   const [isImageLoaded, setIsImageLoaded] = useState(false)
+  const [cardWrapperHeight, setCardWrapperHeight] = useState<number | null>(
+    null
+  )
 
   // const filterMovies = (movie: MCUApiResponse) => {
   //   const releaseDate = movie.release_date
@@ -66,13 +69,25 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
     }
   }, [filteredData, isImageLoaded])
 
+  useEffect(() => {
+    const updateHeight = () => {
+      const availableHeight = window.innerHeight
+      setCardWrapperHeight(availableHeight)
+    }
+    updateHeight()
+    window.addEventListener('resize', updateHeight)
+    return () => {
+      window.removeEventListener('resize', updateHeight)
+    }
+  }, [])
+
   if (isError) {
     return <ErrorMessage>{t('error_message')}</ErrorMessage>
   }
 
   return (
     <>
-      <CardWrapper id="card-wrapper">
+      <CardWrapper id="card-wrapper" height={cardWrapperHeight}>
         {filteredData?.map((item, index, array) => (
           <div key={item.id}>
             <Card
@@ -112,14 +127,16 @@ const Footer = styled.div`
   text-align: center;
 `
 
-const CardWrapper = styled.div`
+const CardWrapper = styled.div<{ height: number | null }>`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
   overflow: auto;
-  height: calc(100vh - 325px);
+  height: ${({ height }) =>
+    height ? `calc(${height}px - 325px)` : 'calc(100vh - 325px)'};
   @media (max-width: 768px) {
-    height: calc(100vh - 350px);
+    height: ${({ height }) =>
+      height ? `calc(${height}px - 350px)` : 'calc(100vh - 350px)'};
   }
   width: 100%;
   align-items: center;

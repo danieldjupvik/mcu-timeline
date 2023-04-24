@@ -39,9 +39,9 @@ i18n
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
+    <GlobalStyle />
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18n}>
-        <GlobalStyle />
         <App />
         <Analytics />
       </I18nextProvider>
