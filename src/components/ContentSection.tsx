@@ -61,7 +61,7 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
   }
 
   useEffect(() => {
-    if (filteredData || !isImageLoaded) {
+    if (filteredData && !isImageLoaded) {
       scrollToInTheater()
     }
   }, [filteredData, isImageLoaded])
