@@ -37,12 +37,6 @@ module.exports = {
         'newlines-between': 'always',
         alphabetize: { order: 'asc', caseInsensitive: true }
       }
-    ],
-    'import/no-default-export': [
-      'error',
-      {
-        allow: ['react', 'react-dom']
-      }
     ]
   },
   settings: {
@@ -52,9 +46,9 @@ module.exports = {
     'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx']
-    },
-    'import/resolver': {
-      typescript: {}
     }
+    // 'import/resolver': {
+    //   typescript: {}
+    // }
   }
 }

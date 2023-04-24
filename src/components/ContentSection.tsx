@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+
 import { scrollTo } from '../helpers/scrollTo'
+import { MCUApiResponse } from '../hooks/useMCUApi'
 
 import { Card } from './Card'
-import { MCUApiResponse } from '../hooks/useMCUApi'
 
 type ContentSectionProps = {
   data: MCUApiResponse[] | undefined
@@ -63,7 +64,7 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
     if (filteredData || !isImageLoaded) {
       scrollToInTheater()
     }
-  }, [filteredData])
+  }, [filteredData, isImageLoaded])
 
   if (isError) {
     return <ErrorMessage>{t('error_message')}</ErrorMessage>

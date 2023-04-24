@@ -1,5 +1,5 @@
+import moment from 'moment'
 import { useTranslation } from 'react-i18next'
-
 import styled, { css } from 'styled-components'
 
 import { MCUApiResponse } from '../hooks/useMCUApi'
@@ -29,13 +29,15 @@ export const Card = ({
   }
 
   const isInTheater = (release_date: string): boolean => {
-    const releaseDate = new Date(release_date)
-    const currentDate = new Date()
+    const releaseDate = moment(release_date)
+    const currentDate = moment()
 
-    const twelveWeeksAgo = new Date()
-    twelveWeeksAgo.setDate(currentDate.getDate() - 84) // 12 weeks ago
+    const subtractedDate = moment().subtract(9, 'weeks')
 
-    return releaseDate <= currentDate && releaseDate >= twelveWeeksAgo
+    return (
+      releaseDate.isSameOrBefore(currentDate) &&
+      releaseDate.isSameOrAfter(subtractedDate)
+    )
   }
 
   const formattedDate = release_date

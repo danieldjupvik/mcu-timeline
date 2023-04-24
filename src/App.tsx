@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
-import { StarBackground } from './components/StarBackground'
-import { useMCUApi } from './hooks/useMCUApi'
 import { ContentSection } from './components/ContentSection'
 import { Loader } from './components/Loader'
+import { StarBackground } from './components/StarBackground'
+import { useMCUApi } from './hooks/useMCUApi'
 
 function App() {
   const { t } = useTranslation()

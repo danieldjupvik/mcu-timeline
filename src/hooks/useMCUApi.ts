@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios'
 import { useQuery } from 'react-query'
 
 import { api } from '../data/api'
@@ -21,7 +22,7 @@ export interface MCUApiResponse {
   imdb_id: string
 }
 
-export const useMCUApi = (endpoint: string, options?: any) => {
+export const useMCUApi = (endpoint: string, options?: AxiosRequestConfig) => {
   const queryKey = `mcu-api-${endpoint}`
   const fetchData = async () => {
     const response = await api.get(endpoint.toLowerCase(), options)
