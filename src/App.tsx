@@ -69,7 +69,7 @@ const TabWrapper = styled.div`
   color: white;
   display: flex;
   gap: 14px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 `
 
 const Header = styled.div`
@@ -78,6 +78,9 @@ const Header = styled.div`
   color: #fff;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   letter-spacing: 4px;
+  @media (max-width: 768px) {
+    font-size: 40px;
+  }
 `
 
 const HeaderContainer = styled.div<{ visible: boolean }>`
@@ -87,12 +90,17 @@ const HeaderContainer = styled.div<{ visible: boolean }>`
   height: 80px;
   padding: 20px 30px;
   background-color: rgb(237, 29, 36);
-  margin-top: 50px;
-  margin-bottom: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   border-radius: 4px;
   opacity: ${({ visible }) => (visible ? 1 : 0)};
   transition: opacity 1s ease-in-out;
   cursor: pointer;
+  @media (max-width: 768px) {
+    padding: 8px 15px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+  }
 `
 
 const Tab = styled.div`
@@ -114,6 +122,7 @@ const Description = styled.div`
   font-size: 17px;
   @media (max-width: 768px) {
     max-width: 300px;
+    font-size: 16px;
   }
 `
 

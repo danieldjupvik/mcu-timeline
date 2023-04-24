@@ -115,6 +115,9 @@ const Content = styled.div<{ isImageLoaded: boolean }>`
   position: relative;
   cursor: pointer;
   ${({ isImageLoaded }) => applyFadeInAnimation(isImageLoaded, '0.5s')}
+  @media (max-width: 768px) {
+    width: 165px;
+  }
 `
 const Image = styled.img<{ isImageLoaded: boolean }>`
   width: 100%;
@@ -122,6 +125,9 @@ const Image = styled.img<{ isImageLoaded: boolean }>`
   object-fit: cover;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
+  @media (max-width: 768px) {
+    height: 237px;
+  }
   ${({ isImageLoaded }) => applyFadeInAnimation(isImageLoaded, '0.5s')}
 `
 
@@ -141,16 +147,25 @@ const Title = styled.div`
   font-size: 20px;
   text-align: center;
   margin-bottom: 15px;
+  @media (max-width: 768px) {
+    font-size: 17px;
+  }
 `
 
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
   min-width: 150px;
+  @media (max-width: 768px) {
+    min-width: 140px;
+  }
 `
 
 const Left = styled.div`
   font-weight: 600;
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `
 
 const InTheaterLogo = styled.div<{ isImageLoaded: boolean }>`

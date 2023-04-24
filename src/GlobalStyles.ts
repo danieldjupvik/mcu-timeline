@@ -48,9 +48,7 @@ const GlobalStyles = createGlobalStyle`
     height: 100%;
   }
 
-  #root {
-    -webkit-overflow-scrolling: touch;
-    overflow-y: auto;
+  #root {  
     height: 100%;
   }
 `
