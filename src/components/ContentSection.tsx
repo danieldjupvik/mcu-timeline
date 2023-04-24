@@ -133,10 +133,10 @@ const CardWrapper = styled.div<{ height: number | null }>`
   border-radius: 4px;
   overflow: auto;
   height: ${({ height }) =>
-    height ? `calc(${height}px - 290px)` : 'calc(100vh - 325px)'};
+    height ? `calc(${height}px - 280px)` : 'calc(100vh - 325px)'};
   @media (max-width: 768px) {
     height: ${({ height }) =>
-      height ? `calc(${height}px - 315px)` : 'calc(100vh - 350px)'};
+      height ? `calc(${height}px - 270px)` : 'calc(100vh - 350px)'};
   }
   width: 100%;
   align-items: center;
