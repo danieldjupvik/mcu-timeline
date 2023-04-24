@@ -1,82 +1,30 @@
-import { useMCUApi } from './hooks/useMCUApi'
-import { ReactNode, useState, Fragment } from 'react'
-import { StarBackground } from './components/StarBackground'
-import styled from 'styled-components'
-import { Card } from './components/Card'
-import { Loader } from './components/Loader'
-import { useTranslation } from 'react-i18next'
 import FontFaceObserver from 'fontfaceobserver'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
+
+import { StarBackground } from './components/StarBackground'
+import { useMCUApi } from './hooks/useMCUApi'
+import { ContentSection } from './components/ContentSection'
+import { Loader } from './components/Loader'
 
 function App() {
   const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('movies')
   const [bangersFontLoaded, setBangersFontLoaded] = useState(false)
+
   const { data, isLoading, isError } = useMCUApi(activeTab, {
     params: {
       order: 'release_date,ASC'
     }
   })
 
-  const date = new Date()
-  const year = date.getFullYear()
-
   useEffect(() => {
     const bangersObserver = new FontFaceObserver('Bangers')
-
-    bangersObserver.load().then(() => {
-      setBangersFontLoaded(true)
-    })
+    bangersObserver.load().then(() => setBangersFontLoaded(true))
   }, [])
 
-  type TabContent = {
-    content: ReactNode
-  }
-
-  type Tabs = {
-    [key: string]: TabContent
-  }
-
-  const tabs: Tabs = {
-    movies: {
-      content: (
-        <CardWrapper>
-          {data
-            ?.filter((movie) => {
-              const releaseDate = new Date(movie.release_date)
-              const twelveWeeksAgo = new Date()
-              twelveWeeksAgo.setDate(twelveWeeksAgo.getDate() - 84) // 12 weeks ago
-              return releaseDate >= twelveWeeksAgo
-            })
-            .map((movie, index, array) => (
-              <Fragment key={movie.id}>
-                <Card {...movie} type={activeTab} />
-                {index !== array.length - 1 && <VerticalLine />}
-              </Fragment>
-            ))}
-        </CardWrapper>
-      )
-    },
-    tvShows: {
-      content: (
-        <CardWrapper>
-          {data?.map((tvShow, index, array) => {
-            const lastAiredDate =
-              tvShow.last_aired_date && new Date(tvShow.last_aired_date)
-            if (lastAiredDate && lastAiredDate < new Date()) {
-              return null
-            }
-            return (
-              <Fragment key={tvShow.id}>
-                <Card {...tvShow} type={activeTab} />
-                {index !== array.length - 1 && <VerticalLine />}
-              </Fragment>
-            )
-          })}
-        </CardWrapper>
-      )
-    }
-  }
+  const handleTabClick = (tab: string) => setActiveTab(tab)
 
   return (
     <>
@@ -90,40 +38,20 @@ function App() {
         </HeaderContainer>
         <Description>{t('description')}</Description>
         <TabWrapper>
-          <Tab
-            data-active={activeTab === 'movies'}
-            onClick={() => setActiveTab('movies')}
-          >
-            {t('movies')}
-          </Tab>
-          <Tab
-            data-active={activeTab === 'tvShows'}
-            onClick={() => setActiveTab('tvShows')}
-          >
-            {t('tvShows')}
-          </Tab>
+          {['movies', 'tvShows'].map((tab) => (
+            <Tab
+              key={tab}
+              data-active={activeTab === tab}
+              onClick={() => handleTabClick(tab)}
+            >
+              {t(tab)}
+            </Tab>
+          ))}
         </TabWrapper>
-        {isError ? (
-          <ErrorMessage>{t('error_message')}</ErrorMessage>
+        {data && !isLoading ? (
+          <ContentSection data={data} isError={isError} activeTab={activeTab} />
         ) : (
-          <>
-            {data && !isLoading ? (
-              <>
-                {tabs[activeTab].content}
-                <Footer>
-                  <div>
-                    {t('dataProvidedBy')}{' '}
-                    <a href="https://github.com/AugustoMarcelo/mcuapi">
-                      AugustoMarcelo
-                    </a>{' '}
-                  </div>
-                  <div>{year} &copy; Daniel Djupvik Sætre</div>
-                </Footer>
-              </>
-            ) : (
-              <Loader />
-            )}
-          </>
+          <Loader />
         )}
       </Wrapper>
     </>
@@ -137,6 +65,13 @@ const Wrapper = styled.div`
   position: relative;
 `
 
+const TabWrapper = styled.div`
+  color: white;
+  display: flex;
+  gap: 14px;
+  margin-bottom: 30px;
+`
+
 const Header = styled.div`
   font-family: 'Bangers', cursive;
   font-size: 48px;
@@ -144,6 +79,7 @@ const Header = styled.div`
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   letter-spacing: 4px;
 `
+
 const HeaderContainer = styled.div<{ visible: boolean }>`
   display: flex;
   align-items: center;
@@ -159,13 +95,6 @@ const HeaderContainer = styled.div<{ visible: boolean }>`
   cursor: pointer;
 `
 
-const TabWrapper = styled.div`
-  color: white;
-  display: flex;
-  gap: 14px;
-  margin-bottom: 30px;
-`
-
 const Tab = styled.div`
   cursor: pointer;
   font-size: 18px;
@@ -179,22 +108,6 @@ const Tab = styled.div`
   }
 `
 
-const CardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  border-radius: 4px;
-`
-
-const Footer = styled.div`
-  padding: 40px;
-  font-size: 13px;
-  gap: 12px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-`
-
 const Description = styled.div`
   margin-bottom: 30px;
   line-height: 24px;
@@ -202,26 +115,6 @@ const Description = styled.div`
   @media (max-width: 768px) {
     max-width: 300px;
   }
-`
-
-const VerticalLine = styled.div`
-  position: relative;
-  height: 60px;
-  margin-left: 35px;
-  margin-right: 35px;
-  &:before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 100%;
-    background-color: #fff;
-  }
-`
-
-const ErrorMessage = styled.div`
-  margin-top: 20px;
 `
 
 export default App

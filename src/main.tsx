@@ -1,16 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { I18nextProvider, initReactI18next } from 'react-i18next'
+import { Analytics } from '@vercel/analytics/react'
 import i18n from 'i18next'
 import LanguageDetector, {
   DetectorOptions
 } from 'i18next-browser-languagedetector'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { I18nextProvider, initReactI18next } from 'react-i18next'
+import { QueryClient, QueryClientProvider } from 'react-query'
+
+import App from './App.tsx'
+import GlobalStyle from './GlobalStyles'
 import enTranslations from './locales/en.json'
 import nbTranslations from './locales/nb.json'
-import GlobalStyle from './GlobalStyles'
-import { Analytics } from '@vercel/analytics/react'
 
 const queryClient = new QueryClient()
 

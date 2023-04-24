@@ -1,7 +1,8 @@
-import { MCUApiResponse } from '../hooks/useMCUApi'
-import styled from 'styled-components'
-import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import styled, { css } from 'styled-components'
+
+import { MCUApiResponse } from '../hooks/useMCUApi'
 
 export const Card = ({
   title,
@@ -9,21 +10,23 @@ export const Card = ({
   release_date,
   phase,
   type,
-  imdb_id
-}: MCUApiResponse & { type: string }) => {
+  imdb_id,
+  index,
+  array,
+  isImageLoaded,
+  setIsImageLoaded
+}: MCUApiResponse & {
+  type: string
+  index: number
+  array: MCUApiResponse[]
+  isImageLoaded: boolean
+  setIsImageLoaded: (value: boolean) => void
+}) => {
   const { t } = useTranslation()
-  const [isImageLoaded, setIsImageLoaded] = useState(false)
-  const [isInTheaterLogoVisible, setIsInTheaterLogoVisible] = useState(false)
 
   const handleImageLoad = () => {
     setIsImageLoaded(true)
   }
-
-  useEffect(() => {
-    if (isImageLoaded) {
-      setIsInTheaterLogoVisible(true)
-    }
-  }, [isImageLoaded])
 
   const isInTheater = (release_date: string): boolean => {
     const releaseDate = new Date(release_date)
@@ -46,35 +49,60 @@ export const Card = ({
   const openUrl = () =>
     imdb_id && window.open(`https://imdb.com/title/${imdb_id}`, '_blank')
 
-  return (
-    <Content onClick={openUrl}>
-      <Image
-        src={cover_url}
-        onLoad={handleImageLoad}
-        isImageLoaded={isImageLoaded}
-      />
-      {type === 'movies' && isInTheater(release_date) && (
-        <InTheaterLogo visible={isInTheaterLogoVisible}>
-          {t('inTheater')}
-        </InTheaterLogo>
-      )}
+  const nextShowAiring = (value: string) => {
+    const lastAiredDate = value
+    if (!lastAiredDate) return false
+    const date = new Date(lastAiredDate)
+    return date >= new Date()
+  }
 
-      <Wrapper>
-        <Title>{title}</Title>
-        <Row>
-          <Left>{t('date')}:</Left>
-          <div>{formattedDate}</div>
-        </Row>
-        <Row>
-          <Left>{t('phase')}:</Left>
-          <div>{phase ?? t('unknown')}</div>
-        </Row>
-      </Wrapper>
-    </Content>
+  return (
+    <>
+      <Content
+        onClick={openUrl}
+        id={
+          isInTheater(release_date) || nextShowAiring(release_date)
+            ? 'active'
+            : ''
+        }
+        isImageLoaded={isImageLoaded}
+      >
+        <Image
+          src={cover_url}
+          onLoad={handleImageLoad}
+          isImageLoaded={isImageLoaded}
+        />
+        {type === 'movies' && isInTheater(release_date) && (
+          <InTheaterLogo isImageLoaded={isImageLoaded}>
+            {t('inTheater')}
+          </InTheaterLogo>
+        )}
+
+        <Wrapper>
+          <Title>{title}</Title>
+          <Row>
+            <Left>{t('date')}:</Left>
+            <div>{formattedDate}</div>
+          </Row>
+          <Row>
+            <Left>{t('phase')}:</Left>
+            <div>{phase ?? t('unknown')}</div>
+          </Row>
+        </Wrapper>
+      </Content>
+      {index !== array.length - 1 && (
+        <VerticalLine isImageLoaded={isImageLoaded} />
+      )}
+    </>
   )
 }
 
-const Content = styled.div`
+const applyFadeInAnimation = (isImageLoaded: boolean, duration: string) => css`
+  opacity: ${isImageLoaded ? '1' : '0'};
+  transition: opacity ${duration} ease-in-out;
+`
+
+const Content = styled.div<{ isImageLoaded: boolean }>`
   max-width: 200px;
   display: flex;
   border: 1px solid white;
@@ -84,6 +112,7 @@ const Content = styled.div`
   background-color: black;
   position: relative;
   cursor: pointer;
+  ${({ isImageLoaded }) => applyFadeInAnimation(isImageLoaded, '0.5s')}
 `
 const Image = styled.img<{ isImageLoaded: boolean }>`
   width: 100%;
@@ -91,8 +120,7 @@ const Image = styled.img<{ isImageLoaded: boolean }>`
   object-fit: cover;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
-  opacity: ${({ isImageLoaded }) => (isImageLoaded ? '1' : '0')};
-  transition: opacity 1s ease-in-out;
+  ${({ isImageLoaded }) => applyFadeInAnimation(isImageLoaded, '0.5s')}
 `
 
 const Wrapper = styled.div`
@@ -123,7 +151,7 @@ const Left = styled.div`
   font-weight: 600;
 `
 
-const InTheaterLogo = styled.div<{ visible: boolean }>`
+const InTheaterLogo = styled.div<{ isImageLoaded: boolean }>`
   position: absolute;
   top: 2px;
   right: -26px;
@@ -137,6 +165,22 @@ const InTheaterLogo = styled.div<{ visible: boolean }>`
   clip-path: polygon(0px 0px, 100% 0px, 90% 100%, 10% 100%);
   transform: rotate(10deg);
   box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px;
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
-  transition: opacity 1s ease-in-out;
+  ${({ isImageLoaded }) => applyFadeInAnimation(isImageLoaded, '0.5s')}
+`
+
+const VerticalLine = styled.div<{ isImageLoaded: boolean }>`
+  position: relative;
+  height: 60px;
+  margin: 25px;
+  ${({ isImageLoaded }) => applyFadeInAnimation(isImageLoaded, '0.5s')}
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background-color: #fff;
+  }
 `
