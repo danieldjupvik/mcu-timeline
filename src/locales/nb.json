@@ -8,5 +8,6 @@
   "date": "Dato",
   "phase": "Fase",
   "inTheater": "På Kino",
-  "unknown": "Ukjent"
+  "unknown": "Ukjent",
+  "days_until": "{{days}} dager til"
 }

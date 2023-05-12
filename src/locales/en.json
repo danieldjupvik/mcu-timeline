@@ -8,5 +8,6 @@
   "date": "Date",
   "phase": "Phase",
   "inTheater": "In Theater",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "days_until": "{{days}} days until"
 }

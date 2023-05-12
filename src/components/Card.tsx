@@ -23,6 +23,8 @@ export const Card = ({
   setIsImageLoaded: (value: boolean) => void
 }) => {
   const { t } = useTranslation()
+  const releaseDate = moment(release_date)
+  const currentDate = moment()
 
   const handleImageLoad = () => {
     setIsImageLoaded(true)
@@ -30,7 +32,6 @@ export const Card = ({
 
   const isInTheater = (release_date: string): boolean => {
     const releaseDate = moment(release_date)
-    const currentDate = moment()
 
     const subtractedDate = moment().subtract(9, 'weeks')
 
@@ -47,6 +48,8 @@ export const Card = ({
         day: 'numeric'
       })
     : t('unknown')
+
+  const isReleaseDateInFuture = releaseDate.isSameOrAfter(currentDate)
 
   const openUrl = () =>
     imdb_id && window.open(`https://imdb.com/title/${imdb_id}`, '_blank')
@@ -90,6 +93,15 @@ export const Card = ({
             <Left>{t('phase')}:</Left>
             <div>{phase ?? t('unknown')}</div>
           </Row>
+          {isReleaseDateInFuture && (
+            <Row>
+              <div style={{ textAlign: 'center', width: '100%' }}>
+                {t('days_until', {
+                  days: releaseDate.diff(currentDate, 'days')
+                })}
+              </div>
+            </Row>
+          )}
         </Wrapper>
       </Content>
       {index !== array.length - 1 && (
