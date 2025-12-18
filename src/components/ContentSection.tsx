@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 
 import { scrollTo } from '../helpers/scrollTo'
-import { MCUApiResponse } from '../hooks/useMCUApi'
+import { MCUApiResponse } from '../types/api'
 
 import { Card } from './Card'
 

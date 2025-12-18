@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: 'https://mcuapi.herokuapp.com/api/v1'
+  baseURL: 'https://mcuapi.up.railway.app/api/v1'
 })
