@@ -14,7 +14,7 @@ The main technologies used are:
 *   **Styled-components:** For styling the application.
 *   **i18next:** For internationalization.
 
-The application fetches data from the MCU API at `https://mcuapi.herokuapp.com/api/v1`.
+The application fetches data from the MCU API at `https://mcuapi.up.railway.app/api/v1`.
 
 ## Building and Running
 

@@ -9,7 +9,7 @@ interface ApiResponse<T> {
 }
 
 export const useMCUApi = (endpoint: string, options?: AxiosRequestConfig) => {
-  const queryKey = `mcu-api-${endpoint}`
+  const queryKey = ['mcu-api', endpoint.toLowerCase(), options ? JSON.stringify(options) : '']
   const fetchData = async (): Promise<MCUApiResponse[]> => {
     const response = await api.get<ApiResponse<MCUApiResponse[]>>(endpoint.toLowerCase(), options)
     return response.data.data
