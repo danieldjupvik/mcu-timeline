@@ -2,7 +2,15 @@ import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 
-import { MCUApiResponse } from '../hooks/useMCUApi'
+import { MCUApiResponse } from '../types/api'
+
+interface CardProps extends MCUApiResponse {
+  type: string
+  index: number
+  array: MCUApiResponse[]
+  isImageLoaded: boolean
+  setIsImageLoaded: (value: boolean) => void
+}
 
 export const Card = ({
   title,
@@ -15,13 +23,7 @@ export const Card = ({
   array,
   isImageLoaded,
   setIsImageLoaded
-}: MCUApiResponse & {
-  type: string
-  index: number
-  array: MCUApiResponse[]
-  isImageLoaded: boolean
-  setIsImageLoaded: (value: boolean) => void
-}) => {
+}: CardProps) => {
   const { t } = useTranslation()
   const releaseDate = moment(release_date)
   const currentDate = moment()
