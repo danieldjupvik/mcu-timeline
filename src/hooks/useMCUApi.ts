@@ -2,40 +2,22 @@ import { AxiosRequestConfig } from 'axios'
 import { useQuery } from 'react-query'
 
 import { api } from '../data/api'
+import { MCUApiResponse } from '../types/api'
 
-export interface MCUApiResponse {
-  id: number
-  title: string
-  release_date: string
-  last_aired_date?: string
-  box_office?: string
-  duration?: number
-  number_episodes?: number
-  overview: string
-  cover_url: string
-  trailer_url?: string
-  directed_by: string
-  phase: number
-  saga: string
-  chronology?: number
-  post_credit_scenes?: number
-  imdb_id: string
+interface ApiResponse<T> {
+  data: T
 }
 
 export const useMCUApi = (endpoint: string, options?: AxiosRequestConfig) => {
   const queryKey = `mcu-api-${endpoint}`
-  const fetchData = async () => {
-    const response = await api.get(endpoint.toLowerCase(), options)
+  const fetchData = async (): Promise<MCUApiResponse[]> => {
+    const response = await api.get<ApiResponse<MCUApiResponse[]>>(endpoint.toLowerCase(), options)
     return response.data.data
   }
 
   const { data, isLoading, isError, error, refetch } = useQuery<
     MCUApiResponse[]
-  >(queryKey, fetchData, {
-    cacheTime: 0,
-    retry: false,
-    refetchOnWindowFocus: false
-  })
+  >(queryKey, fetchData)
 
   return { data, isLoading, isError, error, refetch }
 }
